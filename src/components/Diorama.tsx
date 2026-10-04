@@ -15,6 +15,7 @@ import {
   type RefObject,
 } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 import {
   Group,
   MathUtils,
@@ -233,7 +234,9 @@ function updateCharacter(
   const swing = Math.sin(time * 8 + rig.phase) * 0.45;
   leftLeg.rotation.x = swing;
   rightLeg.rotation.x = -swing;
-  group.position.y = groundHeight(ground, group.position.x, group.position.z) + 1;
+  
+  // Adjusted offset! (Change the 0.5 to tweak their vertical height)
+  group.position.y = groundHeight(ground, group.position.x, group.position.z) + 0.6;
 }
 
 function keepCharactersApart(steve: CharacterRig, alex: CharacterRig) {
@@ -280,6 +283,7 @@ export type DioramaSceneProps = { modelUrl?: string; onReady?: () => void };
 
 /** For use inside an existing Canvas. Include an outer Suspense boundary. */
 export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaSceneProps) {
+  const worldRef = useRef<Group>(null);
   const gltf = useLoader(GLTFLoader, modelUrl);
   const { scene, ground, collision } = useMemo(() => {
     // useLoader caches assets; clone the hierarchy so multiple dioramas are independent.
@@ -320,7 +324,7 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
     ready.current = false;
   }, [scene]);
 
-  useFrame((_, frameDelta) => {
+  useFrame((state, frameDelta) => {
     const delta = Math.min(frameDelta, 0.05);
     animation.elapsed += delta;
     updateCharacter(
@@ -366,6 +370,10 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
 
   return (
     <>
+      <OrbitControls 
+        enableZoom={false} 
+        enablePan={false} 
+      />
       <CameraFraming />
       <hemisphereLight args={[0xbfe8ff, 0x536044, 2.1]} />
       <directionalLight
@@ -382,13 +390,13 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
         shadow-camera-near={1}
         shadow-camera-far={100}
       />
-      <group name="DioramaWorld">
+      <group name="DioramaWorld" ref={worldRef}>
         {/* Cached GLB geometry/materials remain owned by useLoader. */}
         <primitive object={scene} dispose={null} />
         <Character
           rig={rigs.steve}
           name="Steve"
-          position={[0, ground.initial.steve + 1, -4]}
+          position={[0, ground.initial.steve -5, -4]}
           shirt={0x4e79b9}
           hair={0x34261d}
           skin={0xe0a77d}
@@ -396,7 +404,7 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
         <Character
           rig={rigs.alex}
           name="Alex"
-          position={[5.9, ground.initial.alex + 1, 3]}
+          position={[5.9, ground.initial.alex + 3, 3]}
           shirt={0x62a84c}
           hair={0xa86638}
           skin={0xf0bc91}
@@ -451,6 +459,7 @@ export type DioramaProps = DioramaSceneProps & { className?: string; style?: CSS
 
 function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }: DioramaProps) {
   const [loaded, setLoaded] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const handleReady = useCallback(() => {
     setLoaded(true);
     onReady?.();
@@ -458,12 +467,16 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
   return (
     <div
       className={className}
+      onPointerDown={() => setIsDragging(true)}
+      onPointerUp={() => setIsDragging(false)}
+      onPointerLeave={() => setIsDragging(false)}
       style={{
         position: "relative",
         width: "100%",
         height: "100%",
         overflow: "hidden",
         background: "transparent",
+        cursor: isDragging ? "grabbing" : "grab",
         ...style,
       }}
     >
