@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SushiJ - A little hello</title>
+    <style>
+      @font-face {
+        font-family: "MinecraftRegular";
+        src: url("./MinecraftRegular.otf") format("opentype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      #nametag {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.35);
+        color: #ffffff;
+        padding: 4px 8px;
+        font-family: "MinecraftRegular", monospace;
+        font-size: 32px;
+        font-weight: normal;
+        -webkit-font-smoothing: none;
+        line-height: 1;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 10;
+        text-shadow: 2px 2px 0px #3f3f3f;
+        display: none;
+        border: none;
+        border-radius: 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #101d24;
+        color: #edf6f2;
+        font:
+          16px system-ui,
+          sans-serif;
+        min-height: 100svh;
+      }
+      main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 30px 40px;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        letter-spacing: 0.12em;
+      }
+      header b {
+        font-size: 18px;
+        letter-spacing: -0.03em;
+      }
+      header span {
+        color: #9cacb1;
+      }
+      section {
+        position: relative;
+        text-align: center;
+        background: radial-gradient(
+          ellipse at 50% 58%,
+          #24434a66,
+          transparent 60%
+        );
+      }
+      .eyebrow {
+        color: #80e2c5;
+        font-size: 11px;
+        letter-spacing: 0.22em;
+        margin-top: 44px;
+      }
+      h1 {
+        font-size: clamp(30px, 5vw, 52px);
+        font-weight: 550;
+        letter-spacing: -0.055em;
+        margin: 12px 0 0;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: clamp(330px, 57svh, 600px);
+        touch-action: none;
+        outline: none;
+      }
+      #status {
+        color: #aabcbf;
+        font-size: 14px;
+        margin: 0 0 18px;
+        min-height: 20px;
+      }
+      button {
+        border: 0;
+        border-radius: 50px;
+        padding: 15px 26px;
+        background: #95edcd;
+        color: #112923;
+        font: 600 14px system-ui;
+        cursor: pointer;
+        min-width: 160px;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: default;
+      }
+      button:focus-visible {
+        outline: 3px solid white;
+        outline-offset: 5px;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: #82989e;
+        font-size: 11px;
+        letter-spacing: 0.04em;
+        border-top: 1px solid #ffffff13;
+        margin-top: 32px;
+        padding-top: 20px;
+      }
+      @media (max-width: 600px) {
+        main {
+          padding: 24px 18px;
+        }
+        header span {
+          font-size: 10px;
+        }
+        .eyebrow {
+          margin-top: 30px;
+        }
+        footer {
+          font-size: 10px;
+        }
+        canvas {
+          height: 48svh;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <b>SushiJ<span style="color: #95edcd">.</span></b>
+        <span>MINECRAFT / CHARACTER STUDY</span>
+      </header>
+      <section>
+        <p class="eyebrow">A FAMILIAR FACE, ONE MORE DIMENSION</p>
+        <h1>A little hello.</h1>
+
+        <!-- Interactive 3D Canvas -->
+        <canvas
+          aria-label="Interactive 3D Minecraft character. Click to wave hello."
+        ></canvas>
+
+        <!-- Loading Status -->
+        <p id="status" role="status" aria-live="polite">Loading SushiJ...</p>
+
+        <!-- Minecraft Nametag Overlay -->
+        <div id="nametag">
+          <span style="color: #ff5555">[Owner]</span> SushiJ
+        </div>
+      </section>
+      <footer>
+        <span>CLICK TO SAY HELLO</span>
+        <span>YOUR SKIN. YOUR CHARACTER.</span>
+      </footer>
+    </main>
+
+    <!-- Import Map for Three.js ES Modules -->
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+
+    <script type="module">
+      // Load Three.js and GLTFLoader via ES Modules
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+      const canvas = document.querySelector("canvas");
+
+      const nametag = document.getElementById("nametag");
+
+      new ResizeObserver(() => {
+        const h = canvas.clientHeight;
+
+        // Scale proportionally based on a reference height of 600px (where font size was 32px)
+        nametag.style.fontSize = h * 0.064 + "px";
+
+        nametag.style.padding = h * 0.008 + "px " + h * 0.016 + "px";
+
+        const shadow = Math.max(1, h * 0.00333);
+        // Keep a minimum 1px shadow
+        nametag.style.textShadow = shadow + "px " + shadow + "px 0px #3F3F3F";
+      }).observe(canvas);
+
+      const status = document.getElementById("status");
+
+      const button = document.getElementById("wave");
+
+      let renderer;
+
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas,
+          antialias: true,
+          alpha: true,
+        });
+      } catch (error) {
+        status.textContent =
+          "WebGL is unavailable. Try a browser with hardware acceleration enabled.";
+        throw error;
+      }
+
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+      renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+      renderer.toneMappingExposure = 1.4;
+
+      const scene = new THREE.Scene();
+
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x8899aa, 2.5));
+
+      const key = new THREE.DirectionalLight(0xffffff, 2.5);
+      key.position.set(-3, 5, 4);
+      scene.add(key);
+
+      const fill = new THREE.DirectionalLight(0x9abaff, 1);
+      fill.position.set(3, 2, -3);
+      scene.add(fill);
+
+      const camera = new THREE.PerspectiveCamera(34, 1, 0.01, 100);
+
+      camera.position.set(2.6, 2.25, 5);
+      camera.lookAt(0, 1.06, 0);
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        renderer.setSize(rect.width, rect.height, false);
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+      }
+
+      new ResizeObserver(resize).observe(canvas);
+      resize();
+
+      const pedestal = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.88, 0.94, 0.1, 64),
+        new THREE.MeshStandardMaterial({
+          color: 0x263944,
+          roughness: 0.9,
+        }),
+      );
+      pedestal.position.y = -0.055;
+      scene.add(pedestal);
+
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(0.91, 0.007, 8, 100),
+        new THREE.MeshBasicMaterial({
+          color: 0x76e2c1,
+        }),
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = 0.001;
+      scene.add(ring);
+
+      const raycaster = new THREE.Raycaster();
+      const pointer = new THREE.Vector2();
+
+      let model,
+        mixer,
+        action,
+        busy = false,
+        idleTime = 0,
+        idleBlend = 1,
+        rightArm,
+        leftArm,
+        characterRoot,
+        headNode;
+
+      const reducedMotion = matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      /* ── Fireworks particle system (2D canvas overlay) ── */
+      const fwCanvas = document.createElement("canvas");
+
+      fwCanvas.style.cssText =
+        "position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1";
+      canvas.style.position = "relative";
+      canvas.style.zIndex = "2";
+
+      canvas.parentElement.style.position = "relative";
+
+      canvas.parentElement.insertBefore(fwCanvas, canvas.nextSibling);
+
+      const fwCtx = fwCanvas.getContext("2d");
+
+      const fwParticles = [];
+
+      const fwColors = [
+        "#95edcd",
+        "#ff6b8a",
+        "#ffcf48",
+        "#7eaaff",
+        "#c084fc",
+        "#ff9f43",
+        "#ffffff",
+      ];
+
+      let fwSpawnTimer = 0;
+
+      let wasAirborne = false;
+
+      function fwResize() {
+        const r = canvas.getBoundingClientRect();
+        fwCanvas.width = r.width * Math.min(devicePixelRatio, 2);
+        fwCanvas.height = r.height * Math.min(devicePixelRatio, 2);
+      }
+
+      new ResizeObserver(fwResize).observe(canvas);
+      fwResize();
+
+      function spawnBurst(cx, cy) {
+        const color = fwColors[(Math.random() * fwColors.length) | 0];
+
+        const count = (12 + Math.random() * 10) | 0;
+
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+
+          const speed = 50 + Math.random() * 90;
+
+          fwParticles.push({
+            x: cx,
+            y: cy,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1,
+            decay: 0.7 + Math.random() * 0.6,
+            r: 1.5 + Math.random() * 2,
+            color,
+          });
+        }
+      }
+
+      function updateFireworks(delta) {
+        fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+
+        for (let i = fwParticles.length - 1; i >= 0; i--) {
+          const p = fwParticles[i];
+
+          p.x += p.vx * delta;
+          p.y += p.vy * delta;
+
+          p.vy += 40 * delta;
+
+          p.vx *= Math.pow(0.96, delta * 60);
+          p.vy *= Math.pow(0.96, delta * 60);
+
+          p.life -= p.decay * delta;
+
+          if (p.life <= 0) {
+            fwParticles.splice(i, 1);
+            continue;
+          }
+
+          const a = Math.max(0, p.life);
+
+          const radius = p.r * a;
+
+          fwCtx.globalAlpha = a * a;
+
+          fwCtx.fillStyle = p.color;
+
+          fwCtx.beginPath();
+
+          fwCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+
+          fwCtx.fill();
+        }
+
+        fwCtx.globalAlpha = 1;
+      }
+
+      /* ── End fireworks setup ── */
+
+      let currentRotation = 0;
+
+      let targetRotation = 0;
+
+      let isRotatingToFront = false;
+
+      function playWave() {
+        action.reset().fadeIn(0.14).setLoop(THREE.LoopOnce, 1);
+        action.clampWhenFinished = true;
+        action.play();
+      }
+
+      function requestWave() {
+        if (!action || busy) return;
+
+        busy = true;
+        idleBlend = 0;
+
+        if (status) status.textContent = "A jump and a hello!";
+
+        isRotatingToFront = true;
+
+        // Snap to the nearest multiple of 2PI (facing forward)
+        const offset = Math.atan2(camera.position.x, camera.position.z);
+        targetRotation =
+          Math.round((currentRotation - offset) / (Math.PI * 2)) *
+            (Math.PI * 2) +
+          offset;
+      }
+
+      function hit(event) {
+        if (!model) return false;
+        const r = canvas.getBoundingClientRect();
+        pointer.set(
+          ((event.clientX - r.left) / r.width) * 2 - 1,
+          (-(event.clientY - r.top) / r.height) * 2 + 1,
+        );
+        raycaster.setFromCamera(pointer, camera);
+        return raycaster.intersectObject(model, true).length > 0;
+      }
+
+      let down;
+
+      canvas.addEventListener("pointerdown", (e) => {
+        down = {
+          x: e.clientX,
+          y: e.clientY,
+        };
+      });
+
+      canvas.addEventListener("pointerup", (e) => {
+        if (
+          down &&
+          Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6 &&
+          hit(e)
+        )
+          requestWave();
+        down = null;
+      });
+
+      canvas.addEventListener("pointercancel", () => (down = null));
+
+      canvas.addEventListener("pointermove", (e) => {
+        canvas.style.cursor = hit(e) ? "pointer" : "auto";
+      });
+
+      new GLTFLoader().load(
+        "./SushiJ.glb",
+        (gltf) => {
+          model = gltf.scene;
+          scene.add(model);
+          mixer = new THREE.AnimationMixer(model);
+
+          const clip = THREE.AnimationClip.findByName(
+            gltf.animations,
+            "JumpAndWave",
+          );
+
+          if (!clip) throw new Error("Missing JumpAndWave animation");
+
+          action = mixer.clipAction(clip);
+          rightArm = model.getObjectByName("Right_arm");
+          leftArm = model.getObjectByName("Left_arm");
+          characterRoot = model.getObjectByName("SushiJ");
+          headNode = model.getObjectByName("Head");
+
+          mixer.addEventListener("finished", () => {
+            action.stop();
+            busy = false;
+            idleBlend = 0;
+            if (status)
+              status.textContent = "Click SushiJ to jump & wave again";
+          });
+
+          if (status) status.textContent = "Click SushiJ to jump & wave";
+
+          window.sushiDemo = {
+            model,
+            mixer,
+            clip,
+            action,
+            requestWave,
+            scene,
+            camera,
+            renderer,
+          };
+        },
+        undefined,
+        (error) => {
+          if (status) status.textContent = "Unable to load the character.";
+          console.error(error);
+        },
+      );
+
+      let previous = performance.now();
+
+      renderer.setAnimationLoop((now) => {
+        const delta = Math.min((now - previous) / 1000, 0.05);
+        previous = now;
+        if (mixer) mixer.update(delta);
+        idleTime += delta;
+
+        if (model) {
+          if (isRotatingToFront) {
+            currentRotation +=
+              (targetRotation - currentRotation) * (delta * 10);
+            // Ease-out rotation
+            if (Math.abs(targetRotation - currentRotation) < 0.01) {
+              currentRotation = targetRotation;
+
+              isRotatingToFront = false;
+
+              playWave();
+              // Now facing forward, play animation
+            }
+          } else if (!busy) {
+            currentRotation += delta * 0.5;
+            // Idle rotation
+          }
+
+          model.rotation.y = currentRotation;
+        }
+
+        if (!busy && rightArm && !reducedMotion) {
+          idleBlend = Math.min(1, idleBlend + delta * 2);
+          const blend = idleBlend * idleBlend * (3 - 2 * idleBlend);
+          rightArm.rotation.set(
+            0.025 * Math.sin(idleTime * 1.7) * blend,
+            0,
+            (-0.035 - 0.018 * Math.sin(idleTime * 1.5)) * blend,
+          );
+          leftArm.rotation.set(
+            0.025 * Math.sin(idleTime * 1.7 + 0.8) * blend,
+            0,
+            (0.035 + 0.018 * Math.sin(idleTime * 1.5 + 0.55)) * blend,
+          );
+        }
+
+        /* ── Fireworks: spawn while airborne ── */
+        const airborne = characterRoot && characterRoot.position.y > 0.05;
+
+        if (airborne && !reducedMotion) {
+          fwSpawnTimer += delta;
+
+          if (!wasAirborne || fwSpawnTimer > 0.12) {
+            fwSpawnTimer = 0;
+
+            const w = fwCanvas.width,
+              h = fwCanvas.height;
+
+            // Spawn closer to character model:
+            const sx = 0.25 + Math.random() * 0.5;
+            // 35% to 65% width
+            const sy = 0.15 + Math.random() * 0.5;
+            // 20% to 60% height
+            spawnBurst(sx * w, sy * h);
+          }
+        }
+
+        if (!airborne) wasAirborne = false;
+        else wasAirborne = true;
+
+        updateFireworks(delta);
+
+        /* ── End fireworks update ── */
+
+        if (headNode) {
+          nametag.style.display = "block";
+
+          const headPos = new THREE.Vector3();
+
+          headPos.setFromMatrixPosition(headNode.matrixWorld);
+
+          headPos.y += 2.25;
+          // Decoupled vertical height to prevent animation swing
+          headPos.project(camera);
+
+          const cRect = canvas.getBoundingClientRect();
+
+          const pRect = canvas.parentElement.getBoundingClientRect();
+
+          const x =
+            (headPos.x * 0.5 + 0.5) * cRect.width + (cRect.left - pRect.left);
+
+          const y =
+            (headPos.y * -0.5 + 0.5) * cRect.height + (cRect.top - pRect.top);
+
+          nametag.style.left = x + "px";
+
+          nametag.style.top = y + "px";
+        }
+
+        renderer.render(scene, camera);
+      });
+    </script>
+  </body>
+</html>

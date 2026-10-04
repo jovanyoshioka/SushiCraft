@@ -1,33 +1,27 @@
-import { useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import type { Mesh } from 'three'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import Home from './pages/Home'
+import Staff from './pages/Staff'
+import Navbar from './components/Navbar'
 
-function RotatingCube() {
-  const cube = useRef<Mesh>(null)
-
-  useFrame((_, delta) => {
-    if (cube.current) {
-      cube.current.rotation.x += delta * 0.15
-      cube.current.rotation.y += delta * 0.3
-    }
-  })
-
+function PlaceholderPage({ title }: { title: string }) {
   return (
-    <mesh ref={cube} rotation={[0.5, 0.5, 0]}>
-      <boxGeometry />
-      <meshStandardMaterial color="orange" />
-    </mesh>
+    <div style={{ boxSizing: 'border-box', paddingTop: '80px', color: '#fff', textAlign: 'center', minHeight: '100vh' }}>
+      <h1>{title}</h1>
+    </div>
   )
 }
 
 export default function App() {
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
-      <Canvas camera={{ position: [0, 0, 4] }}>
-        <ambientLight intensity={1} />
-        <directionalLight position={[3, 3, 3]} />
-        <RotatingCube />
-      </Canvas>
-    </div>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/challenge" element={<PlaceholderPage title="Challenge" />} />
+        <Route path="/staff" element={<Staff />} />
+        <Route path="/apply" element={<PlaceholderPage title="Apply" />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </>
   )
 }

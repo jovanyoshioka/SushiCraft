@@ -1,7 +1,7 @@
 :root {
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #fff;
+  --bg: #171615;
   --border: #e5e4e7;
   --code-bg: #f4f3ec;
   --accent: #aa3bff;
@@ -11,8 +11,8 @@
   --shadow:
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: "Noto Sans", system-ui, "Segoe UI", Roboto, sans-serif;
+  --heading: "Noto Sans", system-ui, "Segoe UI", Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   font: 18px/145% var(--sans);
@@ -34,7 +34,7 @@
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
-    --bg: #16171d;
+    --bg: #171615;
     --border: #2e303a;
     --code-bg: #1f2028;
     --accent: #c084fc;
@@ -51,15 +51,14 @@
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 body {
@@ -108,4 +107,72 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+@font-face {
+  font-family: "MinecraftRegular";
+  src: url("/SushiCraft/MinecraftRegular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "MinecraftHeader";
+  src: url("/SushiCraft/MinecraftHeader.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root {
+  --mc-environment-arrow__down_clip-path: polygon(0% 0%, 0% 25%, 14.286% 25%, 14.286% 50%, 28.572% 50%, 28.572% 75%, 42.858% 75%, 42.858% 100%, 57.142% 100%, 57.142% 75%, 71.428% 75%, 71.428% 50%, 85.714% 50%, 85.714% 25%, 100% 25%, 100% 0%, 85.714% 0%, 85.714% 25%, 71.428% 25%, 71.428% 50%, 57.142% 50%, 57.142% 75%, 42.858% 75%, 42.858% 50%, 28.572% 50%, 28.572% 25%, 14.286% 25%, 14.286% 0%);
+}
+
+.apply-btn::after {
+  clip-path: var(--mc-environment-arrow__down_clip-path);
+  content: "";
+  display: inline-block;
+  flex-basis: 14px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 8px;
+  transform: rotate(-90deg);
+  width: 14px;
+  background-color: rgb(108, 195, 73);
+}
+
+
+/* Transition definitions */
+.nav-link span {
+  transition: color 0.2s ease-in-out;
+}
+
+.apply-btn {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out !important;
+}
+
+.apply-btn::after {
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Hover definitions */
+.nav-link:hover span {
+  color: rgb(108, 195, 73) !important;
+}
+
+.apply-btn:hover {
+  background-color: #343e40 !important;
+  color: #86d562 !important;
+}
+
+.apply-btn:hover::after {
+  background-color: #86d562 !important;
+}
+
+
+@font-face {
+  font-family: "Noto Sans";
+  src: url("/SushiCraft/NotoSans.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
 }
