@@ -457,6 +457,8 @@ export type DioramaProps = DioramaSceneProps & { className?: string; style?: CSS
 function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }: DioramaProps) {
   const [loaded, setLoaded] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+
   const handleReady = useCallback(() => {
     setLoaded(true);
     onReady?.();
@@ -464,7 +466,10 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
   return (
     <div
       className={className}
-      onPointerDown={() => setIsDragging(true)}
+      onPointerDown={() => {
+        setIsDragging(true);
+        setHasInteracted(true);
+      }}
       onPointerUp={() => setIsDragging(false)}
       onPointerLeave={() => setIsDragging(false)}
       style={{
@@ -508,6 +513,26 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
           Loading world...
         </div>
       </DioramaErrorBoundary>
+
+{/* 360 Rotation Hint */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "80px",
+          right: "80px",
+          pointerEvents: "none",
+          userSelect: "none",
+          zIndex: 10,
+          opacity: hasInteracted ? 0 : 0.7,
+          transition: "opacity 0.6s ease",
+        }}
+      >
+        <img 
+          src={`${import.meta.env.BASE_URL}rotate-360.svg`} 
+          alt="Rotate 360" 
+          style={{ width: 64, height: 64 }} 
+        />
+      </div>
     </div>
   );
 }
@@ -518,3 +543,5 @@ export function Diorama(props: DioramaProps) {
 }
 
 export default Diorama;
+
+

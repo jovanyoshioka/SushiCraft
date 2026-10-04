@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="rotate-360-title">
+  <title id="rotate-360-title">Drag to rotate the model 360 degrees</title>
+  <defs>
+    <mask id="rotate-360-behind-cube" maskUnits="userSpaceOnUse" x="0" y="0" width="64" height="64">
+      <rect width="64" height="64" fill="white"/>
+      <path d="m32 10 12 7v14l-12 7-12-7V17l12-7Z" fill="black" stroke="black" stroke-width="3" stroke-linejoin="round"/>
+    </mask>
+  </defs>
+  <g stroke="white" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Rounder perspective ellipse, passing behind the cube. -->
+    <path d="M8.76 24A24 16 0 0 1 56 28" mask="url(#rotate-360-behind-cube)"/>
+    <path d="m51 23 5 5 5-5"/>
+    <!-- Isometric cube. -->
+    <path d="m32 10 12 7v14l-12 7-12-7V17l12-7Z"/>
+    <path d="m20 17 12 7 12-7M32 24v14"/>
+    <!-- Front of the same perspective rotation ring. -->
+    <path d="M55.24 32A24 16 0 0 1 8 28"/>
+    <path d="m3 33 5-5 5 5"/>
+  </g>
+  <text x="32" y="62" fill="white" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="600" text-anchor="middle" letter-spacing=".3">360°</text>
+</svg>
+
+
