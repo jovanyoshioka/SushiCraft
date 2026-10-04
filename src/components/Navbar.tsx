@@ -136,8 +136,8 @@ export default function Navbar() {
 
       {/* Right */}
       <div style={{ justifySelf: 'end' }}>
-        <Link to="/apply" className="apply-btn" style={applyBtnStyle} aria-label="Apply">
-          <span>Apply</span>
+        <Link to="/join" className="apply-btn" style={applyBtnStyle} aria-label="Join Now">
+          <span>Join Now</span>
         </Link>
       </div>
     </nav>

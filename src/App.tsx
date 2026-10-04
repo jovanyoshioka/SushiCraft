@@ -19,7 +19,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/challenge" element={<PlaceholderPage title="Challenge" />} />
         <Route path="/staff" element={<Staff />} />
-        <Route path="/apply" element={<PlaceholderPage title="Apply" />} />
+        <Route path="/join" element={<PlaceholderPage title="Join Now" />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

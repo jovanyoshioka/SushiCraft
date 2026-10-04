@@ -176,3 +176,23 @@ code {
   font-weight: 100 900;
   font-style: normal;
 }
+
+.join-btn { display: inline-flex; align-items: center; gap: 12px; justify-content: center; background-color: transparent; border: 2px solid rgb(60, 133, 39); color: rgb(108, 195, 73); cursor: pointer; font-family: var(--sans); font-size: 16px; font-weight: 800; padding: 12px 32px; text-transform: uppercase; text-decoration: none; box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5); transition: background-color 0.2s, color 0.2s, transform 0.1s; }
+.join-btn:hover { background-color: #343e40; color: #86d562; }
+.join-btn:active { transform: translateY(4px); box-shadow: 0 0px 0 rgba(0, 0, 0, 0.5); }
+.join-btn::after {
+  clip-path: var(--mc-environment-arrow__down_clip-path);
+  content: "";
+  display: inline-block;
+  flex-basis: 14px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  height: 8px;
+  transform: rotate(-90deg);
+  width: 14px;
+  background-color: rgb(108, 195, 73);
+  transition: background-color 0.2s ease-in-out;
+}
+.join-btn:hover::after {
+  background-color: #86d562 !important;
+}
