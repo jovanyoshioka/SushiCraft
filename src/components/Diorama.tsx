@@ -324,7 +324,7 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
     ready.current = false;
   }, [scene]);
 
-  useFrame((state, frameDelta) => {
+  useFrame((_, frameDelta) => {
     const delta = Math.min(frameDelta, 0.05);
     animation.elapsed += delta;
     updateCharacter(
@@ -370,10 +370,7 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
 
   return (
     <>
-      <OrbitControls 
-        enableZoom={false} 
-        enablePan={false} 
-      />
+      <OrbitControls enableZoom={false} enablePan={false} makeDefault />
       <CameraFraming />
       <hemisphereLight args={[0xbfe8ff, 0x536044, 2.1]} />
       <directionalLight
