@@ -34,7 +34,7 @@ export default function Join() {
             <div className="sushi-join__server-box">
               <div className="sushi-join__server-label">Server IP</div>
               <div className="sushi-join__server-address">
-                play.sushicraft.net
+                mc.sushicraft.net
               </div>
               <p className="sushi-join__disclaimer">
                 Website demo only — no live server.
