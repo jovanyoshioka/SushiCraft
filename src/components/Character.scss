@@ -1,0 +1,42 @@
+@use "../styles/tokens" as theme;
+
+.sushi-character__nametag {
+  position: absolute;
+  background: rgba(theme.$black, 0.35);
+  color: theme.$white;
+  font-family: theme.$font-regular;
+  font-weight: normal;
+  -webkit-font-smoothing: none;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
+  left: var(--character-left);
+  top: var(--character-top);
+  font-size: var(--character-font-size);
+  padding: var(--character-padding);
+  text-shadow: var(--character-shadow-offset) var(--character-shadow-offset) 0
+    theme.$pixel-shadow;
+}
+
+.sushi-character__prefix {
+  color: var(--character-prefix-color);
+}
+
+.sushi-character__fireworks {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sushi-character__canvas-host {
+  position: relative;
+}
+body.sushi-character-hover {
+  cursor: pointer;
+}

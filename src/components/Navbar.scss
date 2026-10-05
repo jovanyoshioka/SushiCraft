@@ -1,0 +1,125 @@
+@use "../styles/tokens" as theme;
+
+.sushi-navbar {
+  backdrop-filter: blur(10px);
+  background-color: rgba(theme.$navbar-surface, 0.9);
+  border-bottom: 1px solid theme.$black;
+  box-shadow: rgba(theme.$black, 0.25) 0px 4px 0px 0px;
+  box-sizing: border-box;
+  color: theme.$white;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 0 40px;
+  font-family: theme.$font-nav;
+  font-size: 16px;
+  font-weight: 400;
+  height: 80px;
+  line-height: 24px;
+  position: absolute;
+  top: 0px;
+  pointer-events: auto;
+  width: 100%;
+  z-index: 300;
+  -webkit-tap-highlight-color: rgba(theme.$black, 0);
+}
+
+.sushi-navbar__links {
+  display: flex;
+  justify-self: center;
+  align-items: center;
+}
+
+.sushi-navbar__link {
+  align-items: center;
+  background-color: rgba(theme.$black, 0);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: theme.$font-nav;
+  font-size: 12px;
+  font-weight: 700;
+  height: 38px;
+  letter-spacing: 0.96px;
+  line-height: 18px;
+  list-style-type: none;
+  min-height: 22px;
+  padding: 10px 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: rgba(theme.$black, 0);
+}
+
+.sushi-navbar__label {
+  box-sizing: border-box;
+  color: inherit;
+  cursor: pointer;
+  display: block;
+  font-family: theme.$font-nav;
+  font-size: 12px;
+  font-weight: 700;
+  height: 18px;
+  letter-spacing: 0.96px;
+  line-height: 18px;
+  list-style-type: none;
+  margin-left: 4px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: rgba(theme.$black, 0);
+}
+
+.sushi-navbar__join {
+  align-items: center;
+  background-color: rgba(theme.$black, 0);
+  border: 2px solid theme.$brand-green-dark;
+  border-image-outset: 0;
+  border-image-repeat: stretch;
+  border-image-slice: 100%;
+  border-image-source: none;
+  border-image-width: 1;
+  box-sizing: border-box;
+  color: theme.$brand-green;
+  column-gap: 7px;
+  cursor: pointer;
+  display: flex;
+  font-family: theme.$font-nav;
+  font-size: 12px;
+  font-weight: 800;
+  height: 36px;
+  letter-spacing: 0.36px;
+  line-height: 20px;
+  list-style-type: none;
+  max-width: fit-content;
+  min-height: 0px;
+  padding: 6px 12px 6px 12px;
+  row-gap: 7px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: rgba(theme.$black, 0);
+  justify-content: center;
+}
+
+.sushi-navbar__link {
+  color: theme.$white;
+}
+.sushi-navbar__link.is-active {
+  color: theme.$brand-green;
+}
+.sushi-navbar__brand {
+  justify-self: start;
+  display: flex;
+  align-items: center;
+}
+.sushi-navbar__logo {
+  height: 36px;
+  margin-left: 12px;
+  cursor: pointer;
+}
+.sushi-navbar__actions {
+  justify-self: end;
+}

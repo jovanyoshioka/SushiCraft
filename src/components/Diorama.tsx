@@ -1,4 +1,6 @@
 "use client";
+import palette from "../styles/palette.module.scss";
+import "./Diorama.scss";
 
 import {
   Component,
@@ -14,6 +16,7 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import type { ColorRepresentation } from "three";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import {
@@ -60,7 +63,12 @@ type Ground = {
   heights: number[];
   initial: { steve: number; alex: number };
 };
-type HouseCollision = { minX: number; maxX: number; minZ: number; maxZ: number };
+type HouseCollision = {
+  minX: number;
+  maxX: number;
+  minZ: number;
+  maxZ: number;
+};
 type CharacterRig = {
   group: RefObject<Group | null>;
   leftLeg: RefObject<Mesh | null>;
@@ -109,14 +117,19 @@ function Block({
 }: {
   size: [number, number, number];
   position: [number, number, number];
-  color: number;
+  color: ColorRepresentation;
   castShadow?: boolean;
   receiveShadow?: boolean;
   meshRef?: RefObject<Mesh | null>;
   roughness?: number;
 }) {
   return (
-    <mesh ref={meshRef} position={position} castShadow={castShadow} receiveShadow={receiveShadow}>
+    <mesh
+      ref={meshRef}
+      position={position}
+      castShadow={castShadow}
+      receiveShadow={receiveShadow}
+    >
       <boxGeometry args={size} />
       <meshStandardMaterial color={color} roughness={roughness} metalness={0} />
     </mesh>
@@ -133,40 +146,53 @@ function Character({
 }: {
   rig: CharacterRig;
   position: [number, number, number];
-  shirt: number;
-  hair: number;
-  skin: number;
+  shirt: ColorRepresentation;
+  hair: ColorRepresentation;
+  skin: ColorRepresentation;
   name: string;
 }) {
   return (
     <group ref={rig.group} position={position} name={name}>
-      <Block size={[0.48, 0.48, 0.48]} position={[0, 1.42, 0]} color={skin} receiveShadow />
+      <Block
+        size={[0.48, 0.48, 0.48]}
+        position={[0, 1.42, 0]}
+        color={skin}
+        receiveShadow
+      />
       <Block size={[0.49, 0.15, 0.49]} position={[0, 1.61, 0]} color={hair} />
       <Block size={[0.5, 0.68, 0.32]} position={[0, 0.92, 0]} color={shirt} />
-      <Block size={[0.18, 0.65, 0.22]} position={[-0.35, 0.95, 0]} color={shirt} />
-      <Block size={[0.18, 0.65, 0.22]} position={[0.35, 0.95, 0]} color={shirt} />
+      <Block
+        size={[0.18, 0.65, 0.22]}
+        position={[-0.35, 0.95, 0]}
+        color={shirt}
+      />
+      <Block
+        size={[0.18, 0.65, 0.22]}
+        position={[0.35, 0.95, 0]}
+        color={shirt}
+      />
       <Block
         meshRef={rig.leftLeg}
         size={[0.2, 0.65, 0.24]}
         position={[-0.13, 0.28, 0]}
-        color={0x344b85}
+        color={palette.dioramaTrousers}
       />
       <Block
         meshRef={rig.rightLeg}
         size={[0.2, 0.65, 0.24]}
         position={[0.13, 0.28, 0]}
-        color={0x344b85}
+        color={palette.dioramaTrousers}
       />
       <Block
         size={[0.065, 0.065, 0.025]}
         position={[-0.1, 1.43, 0.245]}
-        color={0x22252a}
+        color={palette.dioramaEyes}
         castShadow={false}
       />
       <Block
         size={[0.065, 0.065, 0.025]}
         position={[0.1, 1.43, 0.245]}
-        color={0x22252a}
+        color={palette.dioramaEyes}
         castShadow={false}
       />
     </group>
@@ -175,13 +201,18 @@ function Character({
 
 function Cloud({ rig, name }: { rig: CloudRig; name: string }) {
   return (
-    <group ref={rig.group} position={rig.position} scale={rig.scale} name={name}>
+    <group
+      ref={rig.group}
+      position={rig.position}
+      scale={rig.scale}
+      name={name}
+    >
       {CLOUD_PIECES.map((position, index) => (
         <Block
           key={index}
           size={[1.5, 0.55, 0.92]}
           position={position}
-          color={0xf4f1df}
+          color={palette.cloudCream}
           roughness={1}
         />
       ))}
@@ -234,9 +265,10 @@ function updateCharacter(
   const swing = Math.sin(time * 8 + rig.phase) * 0.45;
   leftLeg.rotation.x = swing;
   rightLeg.rotation.x = -swing;
-  
+
   // Adjusted offset! (Change the 0.5 to tweak their vertical height)
-  group.position.y = groundHeight(ground, group.position.x, group.position.z) + 0.6;
+  group.position.y =
+    groundHeight(ground, group.position.x, group.position.z) + 0.6;
 }
 
 function keepCharactersApart(steve: CharacterRig, alex: CharacterRig) {
@@ -282,7 +314,10 @@ function CameraFraming() {
 export type DioramaSceneProps = { modelUrl?: string; onReady?: () => void };
 
 /** For use inside an existing Canvas. Include an outer Suspense boundary. */
-export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaSceneProps) {
+export function DioramaScene({
+  modelUrl = DEFAULT_MODEL_URL,
+  onReady,
+}: DioramaSceneProps) {
   const worldRef = useRef<Group>(null);
   const gltf = useLoader(GLTFLoader, modelUrl);
   const { scene, ground, collision } = useMemo(() => {
@@ -291,8 +326,14 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
     const metadata = scene.getObjectByName("StaticWorld")?.userData;
     const ground = metadata?.ground as Ground | undefined;
     const collision = metadata?.houseCollision as HouseCollision | undefined;
-    if (!ground || !collision || ground.heights.length !== ground.size * ground.size) {
-      throw new Error("Use the supplied diorama-static.glb; its ground metadata is required.");
+    if (
+      !ground ||
+      !collision ||
+      ground.heights.length !== ground.size * ground.size
+    ) {
+      throw new Error(
+        "Use the supplied diorama-static.glb; its ground metadata is required.",
+      );
     }
     scene.traverse((object) => {
       if (object instanceof Mesh) {
@@ -314,7 +355,10 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
     }),
     [scene],
   );
-  const animation = useMemo(() => ({ elapsed: 0, direction: new Vector3() }), [scene]);
+  const animation = useMemo(
+    () => ({ elapsed: 0, direction: new Vector3() }),
+    [scene],
+  );
   const ready = useRef(false);
   const readyCallback = useRef(onReady);
   useEffect(() => {
@@ -360,7 +404,8 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
         cloud.direction = 1;
       }
       group.position.y =
-        cloud.position[1] + Math.sin(animation.elapsed * 0.4 + group.position.x) * 0.12;
+        cloud.position[1] +
+        Math.sin(animation.elapsed * 0.4 + group.position.x) * 0.12;
     }
     if (!ready.current) {
       ready.current = true;
@@ -372,10 +417,10 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
     <>
       <OrbitControls enableZoom={false} enablePan={false} makeDefault />
       <CameraFraming />
-      <hemisphereLight args={[0xbfe8ff, 0x536044, 2.1]} />
+      <hemisphereLight args={[palette.skyLight, palette.groundLight, 2.1]} />
       <directionalLight
         position={[15, 32, -18]}
-        color={0xfff2d4}
+        color={palette.sunLight}
         intensity={3.4}
         castShadow
         shadow-mapSize-width={2048}
@@ -393,18 +438,18 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
         <Character
           rig={rigs.steve}
           name="Steve"
-          position={[0, ground.initial.steve -5, -4]}
-          shirt={0x4e79b9}
-          hair={0x34261d}
-          skin={0xe0a77d}
+          position={[0, ground.initial.steve - 5, -4]}
+          shirt={palette.steveShirt}
+          hair={palette.steveHair}
+          skin={palette.steveSkin}
         />
         <Character
           rig={rigs.alex}
           name="Alex"
           position={[5.9, ground.initial.alex + 3, 3]}
-          shirt={0x62a84c}
-          hair={0xa86638}
-          skin={0xf0bc91}
+          shirt={palette.alexShirt}
+          hair={palette.alexHair}
+          skin={palette.warmPeach}
         />
         {rigs.clouds.map((rig, index) => (
           <Cloud key={index} rig={rig} name={`Cloud${index + 1}`} />
@@ -414,20 +459,10 @@ export function DioramaScene({ modelUrl = DEFAULT_MODEL_URL, onReady }: DioramaS
   );
 }
 
-const overlayStyle: CSSProperties = {
-  position: "absolute",
-  inset: 0,
-  display: "grid",
-  placeItems: "center",
-  pointerEvents: "none",
-  color: "rgba(255,255,255,0.4)",
-  fontSize: 11,
-  letterSpacing: "0.14em",
-  textTransform: "uppercase",
-  fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-};
-
-class DioramaErrorBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+class DioramaErrorBoundary extends Component<
+  { children: ReactNode },
+  { failed: boolean }
+> {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
@@ -435,16 +470,7 @@ class DioramaErrorBoundary extends Component<{ children: ReactNode }, { failed: 
   render() {
     if (this.state.failed)
       return (
-        <div
-          role="alert"
-          style={{
-            ...overlayStyle,
-            color: "#f0bc91",
-            padding: 24,
-            textAlign: "center",
-            textTransform: "none",
-          }}
-        >
+        <div role="alert" className="sushi-diorama__error">
           Could not load the diorama. Check the model URL and WebGL support.
         </div>
       );
@@ -452,9 +478,17 @@ class DioramaErrorBoundary extends Component<{ children: ReactNode }, { failed: 
   }
 }
 
-export type DioramaProps = DioramaSceneProps & { className?: string; style?: CSSProperties };
+export type DioramaProps = DioramaSceneProps & {
+  className?: string;
+  style?: CSSProperties;
+};
 
-function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }: DioramaProps) {
+function DioramaView({
+  modelUrl = DEFAULT_MODEL_URL,
+  className,
+  style,
+  onReady,
+}: DioramaProps) {
   const [loaded, setLoaded] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
@@ -465,22 +499,15 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
   }, [onReady]);
   return (
     <div
-      className={className}
+      className={["sushi-diorama__view", className].filter(Boolean).join(" ")}
       onPointerDown={() => {
         setIsDragging(true);
         setHasInteracted(true);
       }}
       onPointerUp={() => setIsDragging(false)}
       onPointerLeave={() => setIsDragging(false)}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-        background: "transparent",
-        cursor: isDragging ? "grabbing" : "grab",
-        ...style,
-      }}
+      data-dragging={isDragging}
+      style={style}
     >
       <DioramaErrorBoundary>
         <Canvas
@@ -489,7 +516,12 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
           flat
           shadows="soft"
           dpr={[1, 2]}
-          camera={{ position: CAMERA_POSITION, near: 0.1, far: 200, manual: true }}
+          camera={{
+            position: CAMERA_POSITION,
+            near: 0.1,
+            far: 200,
+            manual: true,
+          }}
           gl={{
             antialias: true,
             alpha: true,
@@ -497,7 +529,7 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
             toneMapping: NoToneMapping,
           }}
           fallback={
-            <div role="alert" style={overlayStyle}>
+            <div role="alert" className="sushi-diorama__overlay">
               WebGL is not supported.
             </div>
           }
@@ -509,29 +541,18 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
         <div
           aria-live="polite"
           aria-hidden={loaded}
-          style={{ ...overlayStyle, opacity: loaded ? 0 : 1, transition: "opacity 0.5s ease" }}
+          className="sushi-diorama__loading"
         >
           Loading world...
         </div>
       </DioramaErrorBoundary>
 
-{/* 360 Rotation Hint */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "80px",
-          right: "80px",
-          pointerEvents: "none",
-          userSelect: "none",
-          zIndex: 10,
-          opacity: hasInteracted ? 0 : 0.7,
-          transition: "opacity 0.6s ease",
-        }}
-      >
-        <img 
-          src={`${import.meta.env.BASE_URL}rotate-360.svg`} 
-          alt="Rotate 360" 
-          style={{ width: 64, height: 64 }} 
+      {/* 360 Rotation Hint */}
+      <div className="sushi-diorama__hint" data-interacted={hasInteracted}>
+        <img
+          src={`${import.meta.env.BASE_URL}rotate-360.svg`}
+          alt="Rotate 360"
+          className="sushi-diorama__hint-image"
         />
       </div>
     </div>
@@ -544,5 +565,3 @@ export function Diorama(props: DioramaProps) {
 }
 
 export default Diorama;
-
-

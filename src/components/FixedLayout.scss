@@ -1,0 +1,25 @@
+@use "../styles/tokens" as theme;
+
+.sushi-fixed-layout {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: theme.$surface;
+  pointer-events: auto;
+
+  &--overlay {
+    background: transparent;
+    pointer-events: none;
+    z-index: 300;
+  }
+
+  &__stage {
+    position: absolute;
+    width: var(--design-width);
+    height: var(--design-height);
+    left: var(--design-left);
+    top: var(--design-top);
+    transform: scale(var(--design-scale));
+    transform-origin: top left;
+  }
+}

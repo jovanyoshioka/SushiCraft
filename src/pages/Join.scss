@@ -1,0 +1,99 @@
+@use "../styles/tokens" as theme;
+
+.sushi-join__page {
+  box-sizing: border-box;
+  padding-top: 80px;
+  color: theme.$white;
+  min-height: 953px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: theme.$surface;
+  position: relative;
+  overflow: hidden;
+}
+
+.sushi-join__layout {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  max-width: 1400px;
+  width: 90%;
+  padding: 2rem 0;
+}
+
+.sushi-join__image-box {
+  flex: 1.5 1 550px;
+  max-width: 800px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(theme.$black, 0.5);
+  background-color: theme.$image-placeholder;
+  min-height: 300px;
+}
+
+.sushi-join__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  opacity: 0;
+  &[data-loaded="true"] {
+    opacity: 1;
+  }
+  transition: opacity 0.4s ease-in-out;
+}
+
+.sushi-join__content {
+  flex: 1 1 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.sushi-join__heading {
+  font-family: theme.$font-header;
+  font-size: 4.5rem;
+  margin: 0 0 3rem 0;
+  color: theme.$white;
+  text-shadow: 4px 4px 0px theme.$pixel-shadow;
+}
+
+.sushi-join__description {
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: theme.$text-join;
+  margin-bottom: 2.5rem;
+  max-width: 550px;
+}
+
+.sushi-join__server-box {
+  background-color: rgba(theme.$black, 0.3);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  border: 1px solid rgba(theme.$white, 0.15);
+  align-self: center;
+}
+
+.sushi-join__server-label {
+  font-size: 0.85rem;
+  color: theme.$text-muted;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-family: sans-serif;
+}
+
+.sushi-join__server-address {
+  font-family: monospace;
+  font-size: 2rem;
+  color: theme.$server-green;
+  user-select: all;
+  cursor: text;
+  text-shadow: 0 0 15px rgba(theme.$server-green, 0.2);
+}

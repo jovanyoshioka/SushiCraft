@@ -1,0 +1,47 @@
+// Export the Sass palette to Three.js and canvas code without duplicating color values.
+@use "tokens" as theme;
+
+:export {
+  white: #{theme.$white};
+  black: #{theme.$black};
+  surface: #{theme.$surface};
+  navbarSurface: #{theme.$navbar-surface};
+  imagePlaceholder: #{theme.$image-placeholder};
+  pixelShadow: #{theme.$pixel-shadow};
+  textBody: #{theme.$text-body};
+  textJoin: #{theme.$text-join};
+  textMuted: #{theme.$text-muted};
+  brandGreen: #{theme.$brand-green};
+  brandGreenDark: #{theme.$brand-green-dark};
+  serverGreen: #{theme.$server-green};
+  adminGreen: #{theme.$admin-green};
+  alertRed: #{theme.$alert-red};
+  prizeCyan: #{theme.$prize-cyan};
+  netherOrange: #{theme.$nether-orange};
+  emberYellow: #{theme.$ember-yellow};
+  emberRed: #{theme.$ember-red};
+  outlineOrange: #{theme.$outline-orange};
+  diamondDark: #{theme.$diamond-dark};
+  fireworkMint: #{theme.$firework-mint};
+  fireworkPink: #{theme.$firework-pink};
+  fireworkYellow: #{theme.$firework-yellow};
+  fireworkBlue: #{theme.$firework-blue};
+  fireworkPurple: #{theme.$firework-purple};
+  fireworkOrange: #{theme.$firework-orange};
+  staffPedestal: #{theme.$staff-pedestal};
+  staffRing: #{theme.$staff-ring};
+  staffGroundLight: #{theme.$staff-ground-light};
+  staffFillLight: #{theme.$staff-fill-light};
+  dioramaTrousers: #{theme.$diorama-trousers};
+  dioramaEyes: #{theme.$diorama-eyes};
+  cloudCream: #{theme.$cloud-cream};
+  skyLight: #{theme.$sky-light};
+  groundLight: #{theme.$ground-light};
+  sunLight: #{theme.$sun-light};
+  steveShirt: #{theme.$steve-shirt};
+  steveHair: #{theme.$steve-hair};
+  steveSkin: #{theme.$steve-skin};
+  alexShirt: #{theme.$alex-shirt};
+  alexHair: #{theme.$alex-hair};
+  warmPeach: #{theme.$warm-peach};
+}

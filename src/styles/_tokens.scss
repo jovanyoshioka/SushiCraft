@@ -1,0 +1,58 @@
+// Single source for UI and scene colors. Keep distinct shades to preserve the existing artwork.
+$white: #ffffff;
+$black: #000000;
+$surface: #171615;
+$navbar-surface: #262423;
+$image-placeholder: #2a2a2a;
+$pixel-shadow: #3f3f3f;
+$text-body: #dddddd;
+$text-join: #d4d4d4;
+$text-muted: #888888;
+$brand-green: #6cc349;
+$brand-green-dark: #3c8527;
+$server-green: #4ade80;
+$admin-green: #55ff55;
+$alert-red: #ff5555;
+$prize-cyan: #4dedf4;
+$nether-orange: #ff5500;
+$ember-yellow: #ffcc00;
+$ember-red: #ff3300;
+$outline-orange: #ff8c32;
+$diamond-dark: #0c3730;
+$firework-mint: #95edcd;
+$firework-pink: #ff6b8a;
+$firework-yellow: #ffcf48;
+$firework-blue: #7eaaff;
+$firework-purple: #c084fc;
+$firework-orange: #ff9f43;
+$staff-pedestal: #263944;
+$staff-ring: #76e2c1;
+$staff-ground-light: #8899aa;
+$staff-fill-light: #9abaff;
+$diorama-trousers: #344b85;
+$diorama-eyes: #22252a;
+$cloud-cream: #f4f1df;
+$sky-light: #bfe8ff;
+$ground-light: #536044;
+$sun-light: #fff2d4;
+$steve-shirt: #4e79b9;
+$steve-hair: #34261d;
+$steve-skin: #e0a77d;
+$alex-shirt: #62a84c;
+$alex-hair: #a86638;
+$warm-peach: #f0bc91;
+
+$font-header: "MinecraftHeader", monospace;
+$font-regular: "MinecraftRegular", monospace;
+$font-nav: "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-system:
+  system-ui,
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
+
+// Shared outline/filled artwork glow, used by both challenge illustrations.
+$nether-glow: drop-shadow(0 0 8px rgba($nether-orange, 0.9))
+  drop-shadow(0 0 20px rgba($nether-orange, 0.7))
+  drop-shadow(0 0 40px rgba($nether-orange, 0.4));

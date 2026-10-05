@@ -1,0 +1,72 @@
+@use "../styles/tokens" as theme;
+
+.sushi-diamond__visual {
+  position: absolute;
+}
+
+.sushi-diamond__outline path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawDiamond 4s ease-out forwards;
+}
+@keyframes drawDiamond {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes diamondFlow {
+  0%,
+  100% {
+    filter: theme.$nether-glow;
+    transform: rotate(5deg) translateY(0px);
+  }
+  50% {
+    filter: theme.$nether-glow;
+    transform: rotate(5deg) translateY(-8px);
+  }
+}
+
+.sushi-diamond__outline {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.8;
+  transition: opacity 3s ease;
+  transform: rotate(5deg);
+  filter: theme.$nether-glow;
+}
+
+.sushi-diamond__filled {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 3s ease;
+  transform: rotate(5deg);
+  animation: none;
+  pointer-events: none;
+}
+
+.sushi-diamond__outline {
+  fill: none;
+}
+
+.sushi-diamond__stroke {
+  stroke: theme.$outline-orange;
+  color: theme.$diamond-dark;
+  stroke-width: 6;
+  stroke-linecap: butt;
+  stroke-linejoin: miter;
+}
+
+.sushi-diamond__visual[data-filled="true"] {
+  .sushi-diamond__outline {
+    opacity: 0;
+  }
+  .sushi-diamond__filled {
+    opacity: 1;
+    animation: diamondFlow 6s ease-in-out infinite;
+  }
+}
