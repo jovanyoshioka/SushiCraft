@@ -1,3 +1,4 @@
+import FixedLayout from './FixedLayout'
 import { Link, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
@@ -19,8 +20,9 @@ export default function Navbar() {
     fontWeight: 400,
     height: '80px',
     lineHeight: '24px',
-    position: 'fixed',
+    position: 'absolute',
     top: '0px',
+    pointerEvents: 'auto',
     width: '100%',
     zIndex: 300,
     WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
@@ -112,37 +114,39 @@ export default function Navbar() {
   }
 
   return (
-    <nav style={navStyle}>
-      {/* Left */}
-      <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
-        <Link to="/">
-          <img 
-            src={`${import.meta.env.BASE_URL}SushiCraft.svg`} 
-            alt="SushiCraft" 
-            style={{ height: '36px', marginLeft: '12px', cursor: 'pointer' }} 
-          />
-        </Link>
-      </div>
+    <FixedLayout overlay>
+      <nav style={navStyle}>
+        {/* Left */}
+        <div style={{ justifySelf: 'start', display: 'flex', alignItems: 'center' }}>
+          <Link to="/">
+            <img 
+              src={`${import.meta.env.BASE_URL}SushiCraft.svg`} 
+              alt="SushiCraft" 
+              style={{ height: '36px', marginLeft: '12px', cursor: 'pointer' }} 
+            />
+          </Link>
+        </div>
 
-      {/* Middle */}
-      <div style={linkContainerStyle}>
-        <Link to="/" style={{ ...linkAnchorStyle, color: location.pathname === '/' ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
-          <span style={getSpanStyle('/')}>Home</span>
-        </Link>
-        <Link to="/challenge" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/challenge') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
-          <span style={getSpanStyle('/challenge')}>Challenge</span>
-        </Link>
-        <Link to="/staff" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/staff') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
-          <span style={getSpanStyle('/staff')}>Staff</span>
-        </Link>
-      </div>
+        {/* Middle */}
+        <div style={linkContainerStyle}>
+          <Link to="/" style={{ ...linkAnchorStyle, color: location.pathname === '/' ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+            <span style={getSpanStyle('/')}>Home</span>
+          </Link>
+          <Link to="/challenge" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/challenge') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+            <span style={getSpanStyle('/challenge')}>Challenge</span>
+          </Link>
+          <Link to="/staff" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/staff') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+            <span style={getSpanStyle('/staff')}>Staff</span>
+          </Link>
+        </div>
 
-      {/* Right */}
-      <div style={{ justifySelf: 'end' }}>
-        <Link to="/join" className="apply-btn" style={applyBtnStyle} aria-label="Join Now">
-          <span>Join Now</span>
-        </Link>
-      </div>
-    </nav>
+        {/* Right */}
+        <div style={{ justifySelf: 'end' }}>
+          <Link to="/join" className="apply-btn" style={applyBtnStyle} aria-label="Join Now">
+            <span>Join Now</span>
+          </Link>
+        </div>
+      </nav>
+    </FixedLayout>
   )
 }

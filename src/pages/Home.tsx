@@ -1,3 +1,4 @@
+import FixedLayout from '../components/FixedLayout'
 import Diorama from '../components/Diorama'
 import { Link } from 'react-router-dom'
 
@@ -5,8 +6,8 @@ export default function Home() {
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     boxSizing: 'border-box',
-    height: '100vh', // strictly 100vh to avoid initial scrollbar
-    paddingTop: '80px', // to clear navbar
+    height: '953px',
+    paddingTop: '80px',
     backgroundColor: '#171615',
     display: 'flex',
     alignItems: 'center',
@@ -45,11 +46,10 @@ export default function Home() {
     width: '100%',
     height: '100%',
     margin: '0 auto',
-    padding: '40px', // Bring back safety padding
-    justifyContent: 'center', // Centers the blocks, leaving equal space on far left and right
+    padding: '40px',
+    justifyContent: 'center',
     alignItems: 'center',
-    gap: '60px', // Reduced spacing between the two columns
-    flexWrap: 'wrap', // allow wrapping on smaller screens
+    gap: '60px',
   }
 
   const leftSideStyle: React.CSSProperties = {
@@ -79,48 +79,50 @@ export default function Home() {
   }
 
   return (
-    <div style={containerStyle}>
-      {/* Backgrounds */}
-      <div style={imageBackgroundStyle} />
-      <div style={gradientOverlayStyle} />
+    <FixedLayout>
+      <div style={containerStyle}>
+        {/* Backgrounds */}
+        <div style={imageBackgroundStyle} />
+        <div style={gradientOverlayStyle} />
 
-      {/* Foreground Content */}
-      <div style={contentStyle}>
-        
-        {/* Left Side: Content */}
-        <div style={leftSideStyle}>
-          <img 
-            src={`${import.meta.env.BASE_URL}SushiCraft.svg`} 
-            alt="SushiCraft" 
-            style={{ width: '100%', maxWidth: '650px', filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.5))' }} 
-          />
-          <h2 style={{
-            fontFamily: '"MinecraftHeader", monospace',
-            fontSize: '52px',
-            color: '#ffffff',
-            textShadow: '4px 4px 0px #3F3F3F',
-            margin: '8px 0',
-            textAlign: 'center',
-            whiteSpace: 'nowrap'
-          }}>
-            Set Sail for a New World
-          </h2>
-          <p style={{ maxWidth: '650px', fontSize: '20px', lineHeight: '1.6', color: '#dddddd', margin: 0, textAlign: 'center', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
-            Welcome to SushiCraft! A highly customized, immersive Minecraft experience built for exploration, creativity, and adventure.
-            Discover custom items, advanced mechanics, and a thriving community of players. 
-            Ready to embark on your next great adventure?
-          </p>
-          <Link to="/join" className="join-btn">
-            Join Now
-          </Link>
+        {/* Foreground Content */}
+        <div style={contentStyle}>
+          
+          {/* Left Side: Content */}
+          <div style={leftSideStyle}>
+            <img 
+              src={`${import.meta.env.BASE_URL}SushiCraft.svg`} 
+              alt="SushiCraft" 
+              style={{ width: '100%', maxWidth: '650px', filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.5))' }} 
+            />
+            <h2 style={{
+              fontFamily: '"MinecraftHeader", monospace',
+              fontSize: '52px',
+              color: '#ffffff',
+              textShadow: '4px 4px 0px #3F3F3F',
+              margin: '8px 0',
+              textAlign: 'center',
+              whiteSpace: 'nowrap'
+            }}>
+              Set Sail for a New World
+            </h2>
+            <p style={{ maxWidth: '650px', fontSize: '20px', lineHeight: '1.6', color: '#dddddd', margin: 0, textAlign: 'center', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+              Welcome to SushiCraft! A highly customized, immersive Minecraft experience built for exploration, creativity, and adventure.
+              Discover custom items, advanced mechanics, and a thriving community of players. 
+              Ready to embark on your next great adventure?
+            </p>
+            <Link to="/join" className="join-btn">
+              Join Now
+            </Link>
+          </div>
+
+          {/* Right Side: Diorama */}
+          <div style={rightSideStyle}>
+            <Diorama modelUrl={`${import.meta.env.BASE_URL}diorama-static.glb`} />
+          </div>
+
         </div>
-
-        {/* Right Side: Diorama */}
-        <div style={rightSideStyle}>
-          <Diorama modelUrl={`${import.meta.env.BASE_URL}diorama-static.glb`} />
-        </div>
-
       </div>
-    </div>
+    </FixedLayout>
   )
 }

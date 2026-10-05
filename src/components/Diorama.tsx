@@ -484,6 +484,7 @@ function DioramaView({ modelUrl = DEFAULT_MODEL_URL, className, style, onReady }
     >
       <DioramaErrorBoundary>
         <Canvas
+          resize={{ offsetSize: true }}
           orthographic
           flat
           shadows="soft"

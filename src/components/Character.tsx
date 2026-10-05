@@ -106,9 +106,10 @@ export default function Character({ position = [0, 0, 0], username, prefix, pref
     fwCtxRef.current = fwCanvas.getContext('2d')
     
     const resizeFw = () => {
-      const rect = gl.domElement.getBoundingClientRect()
-      fwCanvas.width = rect.width * Math.min(window.devicePixelRatio, 2)
-      fwCanvas.height = rect.height * Math.min(window.devicePixelRatio, 2)
+      // Use layout pixels: the outer FixedLayout applies the visual scale once.
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      fwCanvas.width = gl.domElement.clientWidth * dpr
+      fwCanvas.height = gl.domElement.clientHeight * dpr
     }
     resizeFw()
     window.addEventListener('resize', resizeFw)
@@ -201,7 +202,7 @@ export default function Character({ position = [0, 0, 0], username, prefix, pref
           for (let i = 0; i < count; i++) {
             const angle = Math.random() * Math.PI * 2
             // Slightly reduce speed so particles don't fly too far outwards
-            const speed = (35 + Math.random() * 65) * (window.devicePixelRatio || 1)
+            const speed = (35 + Math.random() * 65) * Math.min(window.devicePixelRatio || 1, 2)
             fwParticles.current.push({
               x: cx,
               y: cy,
@@ -209,7 +210,7 @@ export default function Character({ position = [0, 0, 0], username, prefix, pref
               vy: Math.sin(angle) * speed,
               life: 1,
               decay: 0.7 + Math.random() * 0.6,
-              r: (1.5 + Math.random() * 2) * (window.devicePixelRatio || 1),
+              r: (1.5 + Math.random() * 2) * Math.min(window.devicePixelRatio || 1, 2),
               color
             })
           }
@@ -223,7 +224,7 @@ export default function Character({ position = [0, 0, 0], username, prefix, pref
         const p = fwParticles.current[i]
         p.x += p.vx * delta
         p.y += p.vy * delta
-        p.vy += 40 * delta * (window.devicePixelRatio || 1)
+        p.vy += 40 * delta * Math.min(window.devicePixelRatio || 1, 2)
         p.vx *= Math.pow(0.96, delta * 60)
         p.vy *= Math.pow(0.96, delta * 60)
         p.life -= p.decay * delta
