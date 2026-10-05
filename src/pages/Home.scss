@@ -3,7 +3,7 @@
 .sushi-home__container {
   position: relative;
   box-sizing: border-box;
-  height: 953px;
+  height: var(--design-height);
   padding-top: 80px;
   background-color: theme.$surface;
   display: flex;
@@ -104,4 +104,42 @@
   align-items: center;
   position: relative;
   left: 50px;
+}
+
+@media (width < 768px) {
+  .sushi-home__container {
+    height: auto;
+    min-height: var(--design-height);
+    padding-top: 110px;
+  }
+  .sushi-home__image-background {
+    background-size: cover;
+    background-position: center;
+  }
+  .sushi-home__content {
+    box-sizing: border-box;
+    flex-direction: column;
+    height: auto;
+    padding: 32px 24px;
+    gap: 32px;
+  }
+  .sushi-home__left-side {
+    flex: none;
+    height: auto;
+    left: 0;
+    gap: 20px;
+  }
+  .sushi-home__heading {
+    white-space: normal;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.2;
+  }
+  .sushi-home__description {
+    font-size: 17px;
+  }
+  .sushi-home__right-side {
+    flex: none;
+    left: 0;
+    height: clamp(280px, 80vw, 520px);
+  }
 }

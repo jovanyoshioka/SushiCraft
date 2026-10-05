@@ -3,7 +3,7 @@
 .sushi-staff__page {
   position: relative;
   width: 100%;
-  height: 953px;
+  height: var(--design-height);
   background: theme.$surface;
 }
 
@@ -36,4 +36,37 @@
   pointer-events: none;
   z-index: 10;
   margin: 0px;
+}
+
+@media (width < 768px) {
+  .sushi-staff__page {
+    box-sizing: border-box;
+    height: auto;
+    min-height: var(--design-height);
+    padding: 140px 16px 32px;
+  }
+  .sushi-staff__heading {
+    position: static;
+    font-size: clamp(32px, 5vw, 54px);
+    line-height: 1.2;
+  }
+  .sushi-staff__members {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .sushi-staff__member {
+    width: 100%;
+    max-width: 560px;
+    height: 320px;
+  }
+  .sushi-staff__canvas {
+    height: 100%;
+  }
+  .sushi-staff__tip {
+    position: static;
+    margin-top: 32px;
+  }
 }

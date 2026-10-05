@@ -123,3 +123,39 @@
 .sushi-navbar__actions {
   justify-self: end;
 }
+
+@media (width < 768px) {
+  .sushi-navbar {
+    height: 110px;
+    padding: 8px 16px;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 48px 38px;
+    column-gap: 12px;
+  }
+  .sushi-navbar__brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+  .sushi-navbar__logo {
+    height: 30px;
+    max-width: 48vw;
+    margin-left: 0;
+    object-fit: contain;
+  }
+  .sushi-navbar__links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .sushi-navbar__actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .sushi-navbar__link {
+    padding: 10px 12px;
+  }
+  .sushi-navbar__label {
+    margin-left: 0;
+    font-size: 11px;
+  }
+}

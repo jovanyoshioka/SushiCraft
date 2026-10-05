@@ -10,7 +10,7 @@
 
 @keyframes floatEmber {
   0% {
-    transform: translateY(1048.3px) scale(1);
+    transform: translateY(calc(var(--design-height) * 1.1)) scale(1);
     opacity: 0;
   }
   15% {
@@ -20,7 +20,7 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(-95.3px) scale(0.5);
+    transform: translateY(calc(var(--design-height) * -0.1)) scale(0.5);
     opacity: 0;
   }
 }
@@ -43,7 +43,7 @@
   box-sizing: border-box;
   padding-top: 80px;
   color: theme.$white;
-  min-height: 953px;
+  min-height: var(--design-height);
   display: flex;
   width: 100%;
   position: relative;
@@ -57,7 +57,10 @@
 .sushi-challenge__visuals {
   flex: 1;
   position: relative;
+  // Keep the 1920 × 953 artwork composition together and center it vertically.
+  height: 873px;
   min-height: 873px;
+  align-self: center;
   overflow: hidden;
 }
 
@@ -156,4 +159,49 @@
   color: theme.$alert-red;
   font-size: 1.5rem;
   margin-top: 2.5rem;
+}
+
+@media (width < 768px) {
+  .sushi-challenge__page {
+    padding-top: 110px;
+    flex-direction: column;
+  }
+  .sushi-challenge__visuals {
+    flex: none;
+    width: min(100%, 650px);
+    align-self: center;
+    height: clamp(300px, 80vw, 460px);
+    min-height: 0;
+  }
+  .sushi-challenge__wither {
+    top: 20px;
+    left: 4%;
+    width: 56%;
+  }
+  .sushi-challenge__diamond {
+    bottom: 24px;
+    right: 0;
+    width: 52%;
+  }
+  .sushi-challenge__content {
+    flex: none;
+    padding: 0 24px 40px;
+  }
+  .sushi-challenge__panel {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+  }
+  .sushi-challenge__heading {
+    font-size: clamp(28px, 5vw, 48px);
+  }
+  .sushi-challenge__description {
+    font-size: 17px;
+    margin-top: 24px;
+  }
+  .sushi-challenge__section-heading,
+  .sushi-challenge__section-heading-spaced,
+  .sushi-challenge__final-heading {
+    font-size: 21px;
+  }
 }

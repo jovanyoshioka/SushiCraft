@@ -120,6 +120,8 @@ export default function Character({
     };
     resizeFw();
     window.addEventListener("resize", resizeFw);
+    const canvasObserver = new ResizeObserver(resizeFw);
+    canvasObserver.observe(gl.domElement);
 
     const parent = gl.domElement.parentElement;
     if (parent) {
@@ -132,6 +134,7 @@ export default function Character({
 
     return () => {
       window.removeEventListener("resize", resizeFw);
+      canvasObserver.disconnect();
       if (parent) {
         if (parent.contains(div)) parent.removeChild(div);
         if (parent.contains(fwCanvas)) parent.removeChild(fwCanvas);
@@ -160,7 +163,7 @@ export default function Character({
 
       // The character's size on screen is strictly proportional to canvas height
       // (due to fixed vertical FOV). Scaling by height ensures it matches the character perfectly.
-      const h = state.size.height;
+      const h = Math.min(state.size.height, 953);
       const fontSize = h * 0.038; // Reduced from 0.064
       const padY = h * 0.005; // Reduced from 0.008
       const padX = h * 0.01; // Reduced from 0.016

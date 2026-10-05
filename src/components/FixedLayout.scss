@@ -3,22 +3,44 @@
 .sushi-fixed-layout {
   position: fixed;
   inset: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  // Reserve width independently of scrollbar visibility to prevent resizing
+  // feedback while allowing the browser to hide the bar when content fits.
+  overflow-y: hidden;
   background: theme.$surface;
   pointer-events: auto;
+
+  &--scrolling {
+    scrollbar-gutter: stable;
+    overflow-y: auto;
+  }
 
   &--overlay {
     background: transparent;
     pointer-events: none;
+    overflow: hidden;
     z-index: 300;
+
+    .sushi-fixed-layout__stage {
+      width: var(--sushi-layout-width, var(--design-width));
+      transform: scale(var(--sushi-layout-scale, var(--design-scale)));
+    }
+  }
+
+  &__extent {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: var(--design-extent);
+    min-height: 100%;
   }
 
   &__stage {
     position: absolute;
     width: var(--design-width);
-    height: var(--design-height);
-    left: var(--design-left);
-    top: var(--design-top);
+    min-height: var(--design-height);
+    left: 0;
+    top: 0;
     transform: scale(var(--design-scale));
     transform-origin: top left;
   }

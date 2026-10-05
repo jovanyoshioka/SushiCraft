@@ -4,7 +4,7 @@
   box-sizing: border-box;
   padding-top: 80px;
   color: theme.$white;
-  min-height: 953px;
+  min-height: var(--design-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,4 +96,51 @@
   user-select: all;
   cursor: text;
   text-shadow: 0 0 15px rgba(theme.$server-green, 0.2);
+}
+
+.sushi-join__disclaimer {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: theme.$text-muted;
+}
+
+@media (width < 768px) {
+  .sushi-join__page {
+    padding-top: 110px;
+  }
+  .sushi-join__layout {
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 32px 24px 48px;
+    gap: 32px;
+  }
+  .sushi-join__image-box {
+    flex: none;
+    width: 100%;
+    max-width: 650px;
+    min-height: 0;
+  }
+  .sushi-join__content {
+    flex: none;
+    width: 100%;
+  }
+  .sushi-join__heading {
+    font-size: clamp(36px, 6vw, 60px);
+    margin-bottom: 20px;
+  }
+  .sushi-join__description {
+    font-size: 17px;
+    margin: 0 0 24px;
+  }
+  .sushi-join__server-box {
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 20px;
+  }
+  .sushi-join__server-address {
+    font-size: clamp(18px, 5vw, 28px);
+    overflow-wrap: anywhere;
+  }
 }
