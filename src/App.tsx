@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Staff from './pages/Staff'
+import Challenge from './pages/Challenge'
 import Navbar from './components/Navbar'
 
 function PlaceholderPage({ title }: { title: string }) {
@@ -17,7 +18,7 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/challenge" element={<PlaceholderPage title="Challenge" />} />
+        <Route path="/challenge" element={<Challenge />} />
         <Route path="/staff" element={<Staff />} />
         <Route path="/join" element={<PlaceholderPage title="Join Now" />} />
         <Route path="*" element={<Navigate to="/" replace />} />
