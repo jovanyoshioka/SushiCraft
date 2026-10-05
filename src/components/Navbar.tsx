@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
+  const location = useLocation();
+
   const navStyle: React.CSSProperties = {
     backdropFilter: 'blur(10px)',
     backgroundColor: 'rgba(38, 36, 35, 0.9)',
@@ -8,7 +10,6 @@ export default function Navbar() {
     boxShadow: 'rgba(0, 0, 0, 0.25) 0px 4px 0px 0px',
     boxSizing: 'border-box',
     color: '#ffffff', 
-    // Using Grid for perfect center alignment of the middle links
     display: 'grid',
     gridTemplateColumns: '1fr auto 1fr',
     alignItems: 'center',
@@ -27,16 +28,14 @@ export default function Navbar() {
 
   const linkContainerStyle: React.CSSProperties = {
     display: 'flex',
-    justifySelf: 'center', // Aligns the flex container to the center of the grid column
+    justifySelf: 'center',
     alignItems: 'center',
   }
 
-  // Corresponds to the <a> element
   const linkAnchorStyle: React.CSSProperties = {
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0)',
     boxSizing: 'border-box',
-    color: 'rgb(255, 255, 255)',
     cursor: 'pointer',
     display: 'inline-flex',
     fontFamily: '"Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
@@ -47,7 +46,7 @@ export default function Navbar() {
     lineHeight: '18px',
     listStyleType: 'none',
     minHeight: '22px',
-    padding: '10px 16px', // 16px left/right padding
+    padding: '10px 16px',
     position: 'relative',
     textAlign: 'center',
     textDecoration: 'none',
@@ -55,25 +54,29 @@ export default function Navbar() {
     WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
   }
 
-  // Corresponds to the <span> inside the <a>
-  const linkSpanStyle: React.CSSProperties = {
-    boxSizing: 'border-box',
-    color: 'rgb(255, 255, 255)',
-    cursor: 'pointer',
-    display: 'block',
-    fontFamily: '"Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
-    fontSize: '12px',
-    fontWeight: 700,
-    height: '18px',
-    letterSpacing: '0.96px',
-    lineHeight: '18px',
-    listStyleType: 'none',
-    marginLeft: '4px',
-    position: 'relative',
-    textAlign: 'center',
-    textTransform: 'uppercase',
-    whiteSpace: 'nowrap',
-    WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+  const getSpanStyle = (path: string): React.CSSProperties => {
+    // Normal exact matching, but also handle /challenge vs /challenge/
+    const isActive = location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
+    
+    return {
+      boxSizing: 'border-box',
+      color: isActive ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)',
+      cursor: 'pointer',
+      display: 'block',
+      fontFamily: '"Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif',
+      fontSize: '12px',
+      fontWeight: 700,
+      height: '18px',
+      letterSpacing: '0.96px',
+      lineHeight: '18px',
+      listStyleType: 'none',
+      marginLeft: '4px',
+      position: 'relative',
+      textAlign: 'center',
+      textTransform: 'uppercase',
+      whiteSpace: 'nowrap',
+      WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
+    };
   }
 
   const applyBtnStyle: React.CSSProperties = {
@@ -123,14 +126,14 @@ export default function Navbar() {
 
       {/* Middle */}
       <div style={linkContainerStyle}>
-        <Link to="/" style={linkAnchorStyle} className="nav-link">
-          <span style={linkSpanStyle}>Home</span>
+        <Link to="/" style={{ ...linkAnchorStyle, color: location.pathname === '/' ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+          <span style={getSpanStyle('/')}>Home</span>
         </Link>
-        <Link to="/challenge" style={linkAnchorStyle} className="nav-link">
-          <span style={linkSpanStyle}>Challenge</span>
+        <Link to="/challenge" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/challenge') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+          <span style={getSpanStyle('/challenge')}>Challenge</span>
         </Link>
-        <Link to="/staff" style={linkAnchorStyle} className="nav-link">
-          <span style={linkSpanStyle}>Staff</span>
+        <Link to="/staff" style={{ ...linkAnchorStyle, color: location.pathname.startsWith('/staff') ? 'rgb(108, 195, 73)' : 'rgb(255, 255, 255)' }} className="nav-link">
+          <span style={getSpanStyle('/staff')}>Staff</span>
         </Link>
       </div>
 
